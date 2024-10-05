@@ -23,8 +23,8 @@ public class BuscarCampanhaService {
     }
 
     public List<CampanhaDTO> buscarCampanhasPorTema(String tema) {
-        if (Objects.isNull(tema)) {
-            throw new IllegalArgumentException("Tema não pode ser nulo");
+        if (Objects.isNull(tema) || tema.isBlank()) {
+            throw new IllegalArgumentException("Tema não pode ser nulo ou vazio");
         }
 
         List<CampanhaEntity> campanhasEntity = campanhaRepository.findByTema(tema);
@@ -44,8 +44,8 @@ public class BuscarCampanhaService {
 
         CampanhaEntity campanhaEntity = campanhaOptional
                 .orElseThrow(() -> new CampanhaNaoEncontradaException(String.format(
-                        "Não foi possível encontrar a campanha com o ID informado"
-                )));
+                        "Não foi possível encontrar a campanha com o ID %s informado"
+                , id)));
 
         return mapper.toDTO(campanhaEntity);
     }
