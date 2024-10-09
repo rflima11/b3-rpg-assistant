@@ -8,6 +8,7 @@ import org.springframework.ai.converter.MapOutputConverter;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.stereotype.Service;
 import tech.ada.rflima.rpgassistant.dto.CampanhaDTO;
+import tech.ada.rflima.rpgassistant.dto.CampanhaRequestDTO;
 import tech.ada.rflima.rpgassistant.dto.LocacaoDTO;
 import tech.ada.rflima.rpgassistant.dto.PersonagemDTO;
 
@@ -35,7 +36,9 @@ public class CriarCampanhaService {
         this.objectMapper = objectMapper;
     }
 
-    public CampanhaDTO executar(String tema) {
+    public CampanhaDTO executar(CampanhaRequestDTO request) {
+        String tema = request.getTema();
+
         MapOutputConverter mapOutputConverter = new MapOutputConverter();
 
         ChatResponse chatResponse = chatModel.call(this.generatePromptTemplate(tema).create());
@@ -43,7 +46,7 @@ public class CriarCampanhaService {
         Map<String, Object> respostaMap = mapOutputConverter.convert(chatResponse.getResult().getOutput().getContent());
 
         CampanhaDTO campanhaDTO = objectMapper.convertValue(respostaMap, CampanhaDTO.class);
-
+        campanhaDTO.setTema(campanhaDTO.getTema());
         salvarCampanhaService.executar(campanhaDTO);
         return campanhaDTO;
     }

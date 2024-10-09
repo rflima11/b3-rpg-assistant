@@ -10,4 +10,5 @@ public class B3RpgAssistantApplication {
 		SpringApplication.run(B3RpgAssistantApplication.class, args);
 	}
 
+
 }

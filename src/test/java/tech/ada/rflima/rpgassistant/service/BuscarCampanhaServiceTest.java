@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import org.junit.jupiter.api.Test;
 import tech.ada.rflima.rpgassistant.dto.CampanhaDTO;
+import tech.ada.rflima.rpgassistant.dto.ConsultaCampanhaDTOResponse;
 import tech.ada.rflima.rpgassistant.exception.CampanhaNaoEncontradaException;
 import tech.ada.rflima.rpgassistant.mapper.CampanhaMapperImpl;
 import tech.ada.rflima.rpgassistant.model.CampanhaEntity;
@@ -44,7 +45,7 @@ public class BuscarCampanhaServiceTest {
         Mockito.when(campanhaRepository.findByTema(tema)).thenReturn(campanhasDoBancoDeDadosFake);
 
         //Ação
-        List<CampanhaDTO> campanhaDTOS = buscarCampanhaService.buscarCampanhasPorTema(tema);
+        List<ConsultaCampanhaDTOResponse> campanhaDTOS = buscarCampanhaService.buscarCampanhasPorTema(tema);
 
 
         //Verificação
@@ -61,7 +62,7 @@ public class BuscarCampanhaServiceTest {
         Exception e = null;
 
         try {
-            List<CampanhaDTO> campanhaDTOS = buscarCampanhaService.buscarCampanhasPorTema(tema);
+            List<ConsultaCampanhaDTOResponse> campanhaDTOS = buscarCampanhaService.buscarCampanhasPorTema(tema);
         } catch (Exception ex) {
             e = ex;
         }

@@ -2,6 +2,7 @@ package tech.ada.rflima.rpgassistant.service;
 
 import org.springframework.stereotype.Service;
 import tech.ada.rflima.rpgassistant.dto.CampanhaDTO;
+import tech.ada.rflima.rpgassistant.dto.ConsultaCampanhaDTOResponse;
 import tech.ada.rflima.rpgassistant.exception.CampanhaNaoEncontradaException;
 import tech.ada.rflima.rpgassistant.mapper.CampanhaMapper;
 import tech.ada.rflima.rpgassistant.model.CampanhaEntity;
@@ -22,7 +23,7 @@ public class BuscarCampanhaService {
         this.mapper = mapper;
     }
 
-    public List<CampanhaDTO> buscarCampanhasPorTema(String tema) {
+    public List<ConsultaCampanhaDTOResponse> buscarCampanhasPorTema(String tema) {
         if (Objects.isNull(tema) || tema.isBlank()) {
             throw new IllegalArgumentException("Tema não pode ser nulo ou vazio");
         }
@@ -31,7 +32,7 @@ public class BuscarCampanhaService {
 
         return campanhasEntity
                 .stream()
-                .map(mapper::toDTO)
+                .map(mapper::toDTOConsulta)
                 .toList();
     }
 

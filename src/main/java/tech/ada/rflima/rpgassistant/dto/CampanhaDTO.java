@@ -5,6 +5,8 @@ import java.util.List;
 public class CampanhaDTO {
 
     private String nomeCampanha;
+
+    private String tema;
     private String descricaoCampanha;
     private String localCampanha;
     private List<LocacaoDTO> locacoes;
@@ -50,4 +52,11 @@ public class CampanhaDTO {
         this.personagens = personagens;
     }
 
+    public String getTema() {
+        return tema;
+    }
+
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
 }
