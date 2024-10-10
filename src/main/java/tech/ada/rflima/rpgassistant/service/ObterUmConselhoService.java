@@ -17,7 +17,6 @@ public class ObterUmConselhoService {
         this.restTemplate = restTemplate;
     }
 
-
     public String executar() {
         try {
             String url = "https://api.adviceslip.com/advice";

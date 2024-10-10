@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -24,78 +22,83 @@ import tech.ada.rflima.rpgassistant.service.CriarCampanhaService;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-class CampanhaControllerTest {
+public class CampanhaControllerTest {
+
+    static final String PATH = "/v1/campanhas";
 
     @InjectMocks
     CampanhaController campanhaController;
+
     @Mock
     CriarCampanhaService criarCampanhaService;
+
     @Mock
     BuscarCampanhaService buscarCampanhaService;
+
     MockMvc mockMvc;
-    final String PATH_CAMPANHAS = "/v1/campanhas";
+
+
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(campanhaController).build();
     }
 
     @Test
-    void criarCampanha() {
+    void deveCriarCampanhaComSucesso() throws Exception {
+        //Cenário
+        String tema = "medieval";
+        CampanhaRequestDTO request = new CampanhaRequestDTO(tema);
+        CampanhaDTO retorno = new CampanhaDTO();
+        retorno.setNomeCampanha("Bosques Sombrios 2");
+
+        when(criarCampanhaService.executar(any()))
+                .thenReturn(retorno);
+
+        //Verificação e execução
+        mockMvc.perform(post(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.asJsonString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(TestUtils.asJsonString(retorno)))
+                .andDo(print());
     }
 
     @Test
-    void criarCampanhaSucesso() throws Exception {
+    void deveBuscarCampanhaPorTemaComSucesso() throws Exception {
+        //Cenário
         String tema = "medieval";
+        ConsultaCampanhaDTOResponse consultaCampanhaDTOResponse = new ConsultaCampanhaDTOResponse();
+        consultaCampanhaDTOResponse.setNomeCampanha("Bosques Sombrios");
+        consultaCampanhaDTOResponse.setId(1L);
 
-        CampanhaRequestDTO campanhaRequestDTO = new CampanhaRequestDTO(tema);
-        CampanhaDTO retornoMock = new CampanhaDTO();
-        retornoMock.setDescricaoCampanha("Campanha Mock");
-        retornoMock.setDescricaoCampanha("Descrição da campanha");
+        List<ConsultaCampanhaDTOResponse> retornoBancoDeDados = Collections
+                .singletonList(consultaCampanhaDTOResponse);
 
-        String request = asJsonString(campanhaRequestDTO);
+        when(buscarCampanhaService.buscarCampanhasPorTema(tema))
+                .thenReturn(retornoBancoDeDados);
 
-        List<ConsultaCampanhaDTOResponse> response = Collections.singletonList(new ConsultaCampanhaDTOResponse());
-
-        Mockito.when(criarCampanhaService.executar(Mockito.any()))
-                .thenReturn(retornoMock);
-
-        mockMvc.perform(
-                        MockMvcRequestBuilders.post(PATH_CAMPANHAS)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(request))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().json(asJsonString(retornoMock)))
-                .andDo(MockMvcResultHandlers.print());
+        //Execução e Verificação
+        mockMvc.perform(get(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .queryParam("tema", tema))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json(TestUtils.asJsonString(retornoBancoDeDados)))
+                .andDo(print());
     }
 
     @Test
-    void buscarCampanhasPorTema() throws Exception {
-        String tema = "medieval";
-
-        List<ConsultaCampanhaDTOResponse> response = Collections.singletonList(new ConsultaCampanhaDTOResponse());
-
-        Mockito.when(buscarCampanhaService.buscarCampanhasPorTema(tema))
-                .thenReturn(response);
-
-        mockMvc.perform(
-                MockMvcRequestBuilders.get(PATH_CAMPANHAS)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .queryParam("tema", tema))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().json(asJsonString(response)))
-                .andDo(MockMvcResultHandlers.print());
+    void deveRetornar400QuandoNaoEhInformadoQueryParamObrigatorio() throws Exception {
+        mockMvc.perform(get(PATH)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
     }
-
-    private String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
 }

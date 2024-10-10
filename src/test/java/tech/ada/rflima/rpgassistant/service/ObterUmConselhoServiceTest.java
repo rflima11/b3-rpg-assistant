@@ -28,13 +28,16 @@ class ObterUmConselhoServiceTest {
 
     @Test
     void deveRetornarQuandoOStatusCodeFor200() {
+        //Cenário
         ResponseEntity<String> retorno = new ResponseEntity<>(
                 "{\"slip\": { \"id\": 148, \"advice\": \"Some people would be better off if they took their own advice.\"}}", HttpStatus.OK);
         Mockito.when(restTemplate.getForEntity(Mockito.anyString(), Mockito.eq(String.class)))
                 .thenReturn(retorno);
 
+        //Execução
         String executar = obterUmConselhoService.executar();
 
+        //Verificação
         Assertions.assertNotNull(executar);
         Assertions.assertEquals(HttpStatus.OK, retorno.getStatusCode());
     }
