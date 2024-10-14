@@ -1,4 +1,4 @@
-package tech.ada.rflima.rpgassistant.service;
+package tech.ada.rflima.rpgassistant.unit.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +8,7 @@ import tech.ada.rflima.rpgassistant.dto.CampanhaDTO;
 import tech.ada.rflima.rpgassistant.mapper.CampanhaMapper;
 import tech.ada.rflima.rpgassistant.model.CampanhaEntity;
 import tech.ada.rflima.rpgassistant.repository.CampanhaRepository;
+import tech.ada.rflima.rpgassistant.service.SalvarCampanhaService;
 
 
 import static org.junit.jupiter.api.Assertions.*;

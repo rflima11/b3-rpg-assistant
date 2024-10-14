@@ -1,4 +1,4 @@
-package tech.ada.rflima.rpgassistant.controller;
+package tech.ada.rflima.rpgassistant.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import tech.ada.rflima.rpgassistant.dto.CampanhaDTO;

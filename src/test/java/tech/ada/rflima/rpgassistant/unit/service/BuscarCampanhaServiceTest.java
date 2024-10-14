@@ -1,4 +1,4 @@
-package tech.ada.rflima.rpgassistant.service;
+package tech.ada.rflima.rpgassistant.unit.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +10,7 @@ import tech.ada.rflima.rpgassistant.exception.CampanhaNaoEncontradaException;
 import tech.ada.rflima.rpgassistant.mapper.CampanhaMapperImpl;
 import tech.ada.rflima.rpgassistant.model.CampanhaEntity;
 import tech.ada.rflima.rpgassistant.repository.CampanhaRepository;
+import tech.ada.rflima.rpgassistant.service.BuscarCampanhaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,24 +42,21 @@ public class BuscarCampanhaServiceTest {
         campanhasDoBancoDeDadosFake.add(campanhaEntity2);
         campanhasDoBancoDeDadosFake.add(campanhaEntity1);
 
-
         Mockito.when(campanhaRepository.findByTema(tema)).thenReturn(campanhasDoBancoDeDadosFake);
 
         //Ação
         List<ConsultaCampanhaDTOResponse> campanhaDTOS = buscarCampanhaService.buscarCampanhasPorTema(tema);
 
-
         //Verificação
         Assertions.assertNotNull(campanhaDTOS);
         Assertions.assertFalse(campanhaDTOS.isEmpty());
         Assertions.assertEquals(2, campanhaDTOS.size());
-
     }
 
     @Test
     void deveLancarExcecaoQuandoOTemaForInvalido() {
         //cenário
-            String tema = null;
+        String tema = null;
         Exception e = null;
 
         try {

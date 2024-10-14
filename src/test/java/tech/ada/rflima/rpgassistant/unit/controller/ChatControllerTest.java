@@ -1,4 +1,4 @@
-package tech.ada.rflima.rpgassistant.controller;
+package tech.ada.rflima.rpgassistant.unit.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tech.ada.rflima.rpgassistant.controller.ChatController;
 import tech.ada.rflima.rpgassistant.service.ChatService;
 
 import static org.mockito.Mockito.when;
@@ -55,6 +56,5 @@ public class ChatControllerTest {
                 .andExpect(content().string(retorno))
                 .andDo(print());
     }
-
 
 }

@@ -1,4 +1,4 @@
-package tech.ada.rflima.rpgassistant.service;
+package tech.ada.rflima.rpgassistant.unit.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+import tech.ada.rflima.rpgassistant.service.ObterUmConselhoService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
